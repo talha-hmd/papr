@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* Utility Classes */
+@layer utilities {
+
+  /* Font Families */
+  .font-heading {
+    font-family: "Mozilla Headline", sans-serif;
+  }
+
+  .font-body {
+    font-family: "Poppins", sans-serif;
+  }
+
+  /* Muted Text (for descriptions, labels, etc.) */
+  .text-muted {
+    color: #aaa;
+  }
+}
