@@ -1,19 +1,125 @@
 @import "tailwindcss";
 
-/* Utility Classes */
+/* === hard reset for spacing & height === */
+html, body, #root { height: 100%; background: #000; }
+body { margin: 0; }
+
+.container, .site-frame, .app-surface {
+  max-width: none; /* we’ll control width via Tailwind on the React side */
+  width: 100%;
+}
+
+/* Page background (outside the screen) — slightly lighter than black */
+.page-bg { background:#111111; }         /* tweak #0f0f0f or #121212 for a bit more lightness */
+
+/* The “screen” container (inner sheet) — pure black + deep drop shadow */
+.screen {
+  background:#000000;                     /* jet black */
+  box-shadow:
+    0 40px 140px rgba(0,0,0,.85),         /* big soft outer shadow */
+    0 10px 40px rgba(0,0,0,.45),
+    0 0 0 1px rgba(255,255,255,.04);      /* faint ring */
+  border-radius: 0;                       /* square corners */
+  overflow: hidden;                       /* clip internal scroll */
+}
+
+/* Internal scroller (so the “screen” stays fixed visually) */
+.screen-scroll {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* ---------- Keyframes (used by quote cards + menus) ---------- */
+@keyframes float-y {
+  0% { transform: translateY(0) }
+  50% { transform: translateY(-10px) }
+  100% { transform: translateY(0) }
+}
+
+@keyframes slide-in-h {
+  0% { transform: scaleX(0); opacity: 0 }
+  70% { opacity: 1 }
+  100% { transform: scaleX(1); opacity: 1 }
+}
+
+@keyframes slide-in-v {
+  0% { transform: scaleY(0); opacity: 0 }
+  70% { opacity: 1 }
+  100% { transform: scaleY(1); opacity: 1 }
+}
+
+/* ---------- Utilities ---------- */
 @layer utilities {
+  /* Fonts */
+  .font-heading { font-family: "Space Grotesk", sans-serif }
+  .font-body    { font-family: "Space Grotesk", sans-serif }
+  .font-body-inter { font-family: "Inter", sans-serif }
+  .text-muted   { color: #aaa }
 
-  /* Font Families */
-  .font-heading {
-    font-family: "Mozilla Headline", sans-serif;
+  /* Dark theme surfaces */
+  .dark-frame   { background:#000 }                 /* page background (pure black) */
+  .grey-bg      { background:#000 }                 /* hero section (pure black)   */
+
+  /* inner “monitor” surface (slightly off-black) */
+  .dark-surface {
+    background:#0c0c0c;
+    box-shadow:
+      0 26px 60px rgba(0,0,0,.85),       /* big soft drop */
+      0 1px 0 rgba(255,255,255,.06) inset,
+      0 -1px 0 rgba(255,255,255,.02) inset,
+      0 0 0 1px rgba(255,255,255,.05);
   }
 
-  .font-body {
-    font-family: "Poppins", sans-serif;
+  /* (add-on) a touch more separation + a soft top sheen overlay */
+  .surface-pop { box-shadow:
+      0 36px 90px rgba(0,0,0,.9),
+      0 1px 0 rgba(255,255,255,.07) inset,
+      0 -1px 0 rgba(255,255,255,.03) inset,
+      0 0 0 1px rgba(255,255,255,.06) }
+  .has-sheen { position:relative }
+  .has-sheen::before {
+    content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0) 22%);
   }
 
-  /* Muted Text (for descriptions, labels, etc.) */
-  .text-muted {
-    color: #aaa;
+  /* Link underline (navbar) */
+  .link-underline { @apply relative }
+  .link-underline::after{
+    content:""; position:absolute; left:0; bottom:-.01em; width:100%; height:2px; background:currentColor;
+    transform:scaleX(0); transform-origin:right; transition:transform .3s ease
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after { transform:scaleX(1); transform-origin:left }
+
+  /* Menu slide-ins */
+  .animate-slide-in-h { animation: slide-in-h .25s ease-out forwards; transform-origin:left }
+  .animate-slide-in-v { animation: slide-in-v .25s ease-out forwards; transform-origin:top }
+
+  /* Hide scrollbars but allow scroll */
+  .no-scrollbar::-webkit-scrollbar { display:none }
+  .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none }
+
+  /* Glassy quote cards (with optional grain) */
+  .glass-card{
+    background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 12px 35px rgba(0,0,0,.25);
+  }
+  .grain::after{
+    content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit; opacity:.35; mix-blend-mode:overlay;
+    background-image: radial-gradient(rgba(255,255,255,.08) 1px, transparent 1.2px);
+    background-size:3px 3px;
+  }
+
+  .quote-mark{ font-size:56px; line-height:1 }
+  .float-soft{ animation: float-y 6s ease-in-out infinite; will-change:transform }
+  .float-delay-sm{ animation-delay:.8s }
+  .float-delay-md{ animation-delay:1.6s }
+  .float-delay-lg{ animation-delay:2.4s }
+
+  @media (prefers-reduced-motion: reduce){
+    .float-soft, .float-delay-sm, .float-delay-md, .float-delay-lg { animation:none !important }
   }
 }
