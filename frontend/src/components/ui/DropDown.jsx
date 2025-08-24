@@ -16,7 +16,7 @@ const Dropdown = ({
   items = [],
   placeholder = "Select",
   value = "",
-  onChange = () => {},
+  onChange = () => { },
   disabled = false,
   width = "240px",
 }) => {
@@ -98,8 +98,8 @@ const StyledWrapper = styled.div`
     gap: 10px;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 16px;
-    border-radius: 14px;
+    padding: 8px 16px;
+    border-radius: 10px;
     border: 1px solid rgba(255,255,255,.18);
     background: rgba(255,255,255,0.18);
     backdrop-filter: blur(6px);
@@ -176,6 +176,41 @@ const StyledWrapper = styled.div`
   /* slim scrollbar inside panel */
   .submenu::-webkit-scrollbar { width: 6px; }
   .submenu::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.25); border-radius: 3px; }
+
+  
+/* ---------- LIGHT MODE OVERRIDES ---------- */
+  :root:not(.dark) & .link {
+    border: 1px solid rgba(0,0,0,.12);
+    background: rgba(0,0,0,.06);
+    color: #171717;
+  }
+  :root:not(.dark) & .link svg { fill:#171717; }
+
+  /* On light, the hover overlay should darken slightly (not white) */
+  :root:not(.dark) & .link::after {
+    background: rgba(0,0,0,.08);
+  }
+  :root:not(.dark) & .link:hover { color:#0f0f0f; }
+  :root:not(.dark) & .link:hover svg { fill:#0f0f0f; }
+
+  /* When a value is selected (active), keep it visible on light */
+  ${(p) => p.$active && `
+    :root:not(.dark) & .link {
+      background: #ffffff;
+      border-color: rgba(0,0,0,.14);
+      color: #171717;
+    }
+    :root:not(.dark) & .link::after { display:none; }
+  `}
+
+  /* Dark-mode panel is fine; add explicit dark panel if you want higher contrast */
+  .submenu { /* light defaults already white */ }
+  .dark & .submenu{
+    background: rgba(24,24,24,.98);
+    border-color: rgba(255,255,255,.12);
+  }
+  .dark & .submenu-link{ color:#f5f5f5; }
+  .dark & .submenu-link:hover{ background: rgba(255,255,255,.06); }
 `;
 
 export default Dropdown;

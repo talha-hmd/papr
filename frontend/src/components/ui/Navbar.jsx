@@ -1,5 +1,7 @@
 // src/components/ui/Navbar.jsx
 import React, { useState, useRef, useEffect } from 'react';
+import Switch from './Switch';
+import TopDrawer from './TopDrawer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp, faTwitter, faInstagram, faPatreon } from '@fortawesome/free-brands-svg-icons';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
@@ -31,13 +33,24 @@ export default function Navbar() {
     }, []);
 
     return (
-        <header className="relative z-40 w-full flex items-center py-3 grey-bg">
-            {/* Donate (right-hand side) */}
-            <div className="relative ml-auto">
+        <header className="relative z-40 w-full flex items-center py-3 bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
+            {/* Hamburger menu (only on small screens) */}
+            <div className="absolute right-4 top-1 z-50 md:hidden">
+                <TopDrawer />
+            </div>
+            {/* left-most theme toggle */}
+            <div className="relative mr-auto pl-12 hidden md:block">
+                <Switch />
+            </div>
+
+            {/* Donate button */}
+            {/* <div className="relative ml-auto">
                 <button
                     ref={donateBtnRef}
                     onClick={() => setDonateOpen(p => !p)}
-                    className="ml-auto mr-12 px-4 py-1 rounded-lg font-body transition cursor-pointer text-white hover:opacity-80"
+                    className="ml-auto mr-12 px-4 py-1 rounded-lg font-body cursor-pointer 
+                    text-black hover:bg-black hover:text-white 
+                    dark:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300 hidden md:block"
                 >
                     Donate
                 </button>
@@ -45,7 +58,10 @@ export default function Navbar() {
                 {donateOpen && (
                     <div
                         ref={donateMenuRef}
-                        className="absolute left-1/2 -translate-x-1/2 mt-2 z-50 flex flex-col gap-2 px-4 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-white animate-slide-in-v"
+                        className="absolute left-1/2 -translate-x-1/2 mt-2 z-50 flex flex-col gap-2 px-4 py-3 rounded-xl 
+                    bg-black/10 text-black border border-black/15 
+                    dark:bg-white/10 dark:text-white dark:border-white/15 
+                    backdrop-blur-md animate-slide-in-v"
                     >
                         <a
                             href="https://buymeacoffee.com/yourname"
@@ -53,7 +69,7 @@ export default function Navbar() {
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 transition-transform duration-200 hover:scale-105"
                         >
-                            <FontAwesomeIcon icon={faCoffee} className="w-5 h-5 text-white" />
+                            <FontAwesomeIcon icon={faCoffee} className="w-5 h-5" />
                             <span className="text-sm font-body">Coffee</span>
                         </a>
 
@@ -63,32 +79,43 @@ export default function Navbar() {
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 transition-transform duration-200 hover:scale-105"
                         >
-                            <FontAwesomeIcon icon={faPatreon} className="w-5 h-5 text-white" />
+                            <FontAwesomeIcon icon={faPatreon} className="w-5 h-5" />
                             <span className="text-sm font-body">Patreon</span>
                         </a>
                     </div>
                 )}
-            </div>
+            </div> */}
 
-            {/* centre group */}
+            {/* Centre nav */}
             <nav
-                className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2
-                            z-50 cursor-pointer flex gap-6 font-body select-none"
+                className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-50 cursor-pointer hidden md:flex gap-6 font-body select-none"
             >
-                <a href="#" className="link-underline text-white hover:opacity-80 transition">Home</a>
+                <a
+                    href="#"
+                    className="px-5 py-1 rounded-lg duration-500 
+                    text-black hover:bg-black hover:text-white 
+                    dark:text-white dark:hover:bg-white dark:hover:text-black"
+                >
+                    Home
+                </a>
 
-                {/* Socials toggle button */}
+                {/* Socials */}
                 <button
                     ref={btnRef}
                     onClick={() => setOpen((p) => !p)}
-                    className="link-underline relative cursor-pointer text-white hover:opacity-80 transition"
+                    className="relative cursor-pointer px-4 py-1 rounded-lg duration-500 
+                    text-black hover:bg-black hover:text-white 
+                    dark:text-white dark:hover:bg-white dark:hover:text-black"
                 >
                     Socials
 
                     {open && (
                         <div
                             ref={menuRef}
-                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 flex gap-4 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-white animate-slide-in-h"
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 flex gap-4 px-4 py-2 rounded-xl 
+                        bg-black/10 text-black border border-black/15 
+                        dark:bg-white/10 dark:text-white dark:border-white/15 
+                        backdrop-blur-md animate-slide-in-h"
                         >
                             {[faWhatsapp, faTwitter, faInstagram].map((icon) => (
                                 <a
@@ -97,7 +124,7 @@ export default function Navbar() {
                                     className="transition-transform duration-200 hover:scale-110"
                                     aria-label={icon.iconName}
                                 >
-                                    <FontAwesomeIcon icon={icon} className="w-5 h-5 text-white" />
+                                    <FontAwesomeIcon icon={icon} className="w-5 h-5" />
                                 </a>
                             ))}
                         </div>

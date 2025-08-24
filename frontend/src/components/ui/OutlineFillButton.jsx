@@ -2,33 +2,63 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function OutlineFillButton({ children = "Hello", onClick }) {
-    return (
-        <StyledWrapper>
-            <button className="btn type1" onClick={onClick}>
-                <span className="btn-txt">{children}</span>
-            </button>
-        </StyledWrapper>
-    );
+export default function OutlineFillButton({
+  children = "Hello",
+  onClick,
+  onClear,          // 🔹 called when the x is clicked
+  active = false,   // 🔹 selected button
+  dimmed = false,   // 🔹 fade/blur other buttons
+  className = "",
+}) {
+  return (
+    <StyledWrapper>
+      <button
+        className={`btn type1 ${active ? "is-active" : ""} ${dimmed ? "is-dimmed" : ""} ${className}`}
+        onClick={onClick}
+      >
+        <span className="btn-txt">{children}</span>
+
+        {/* Tiny x in the top-right only when active */}
+        {active && (
+          <span
+            className="close-x"
+            aria-label="Clear selection"
+            onClick={(e) => {
+              e.stopPropagation();     // don't trigger main onClick
+              onClear?.();
+            }}
+          >
+            {/* Font Awesome class if you’ve loaded FA, else use × */}
+            <i className="fa-solid fa-xmark fa-lg" aria-hidden="true" />
+          </span>
+        )}
+      </button>
+    </StyledWrapper>
+  );
 }
 
 const StyledWrapper = styled.div`
   .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 50px;
-    width: 500px;
+    width: 100%;
+    max-width: 800px;
     position: relative;
     background: transparent;
     cursor: pointer;
-    border: 2px solid rgba(255, 255, 255, 0.9); /* white outline */
+    border: 2px solid rgba(0,0,0,.8);    /* light default */
     border-radius: 10px;
-    color: rgba(255, 255, 255, 0.92);           /* white text on dark bg */
+    color: #111;                         /* dark text on light */
     overflow: hidden;
-    transition: color .35s ease, border-color .35s ease, box-shadow .35s ease;
+    transition: color .35s ease, border-color .35s ease, box-shadow .35s ease,
+                filter .25s ease, opacity .25s ease;
   }
 
   .btn:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(255,255,255,.18), 0 0 0 6px rgba(255,255,255,.08);
+    box-shadow: 0 0 0 3px rgba(0,0,0,.2), 0 0 0 6px rgba(0,0,0,.1);
   }
 
   .btn-txt {
@@ -39,7 +69,7 @@ const StyledWrapper = styled.div`
     font-family: 'Space Grotesk', sans-serif;
   }
 
-  /* expanding fill */
+  /* fill-on-hover ripple */
   .type1::after {
     content: "";
     position: absolute;
@@ -50,29 +80,78 @@ const StyledWrapper = styled.div`
     top: 50%;
     transform: translate(-50%, -50%) scale(0);
     border-radius: 30px;
-    background: #fff;                           /* WHITE fill on hover */
+    background: #111;   /* light: black ripple */
     transition: transform .5s cubic-bezier(.23,1,.32,1);
     z-index: 0;
   }
 
-  /* hover -> fill white, turn text dark */
   .btn:hover {
-    color: #0f0f0f;                              /* dark text over white */
+    color: #fff;
     border-color: transparent;
-    box-shadow: 0 8px 60px rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 60px rgba(0,0,0,.15);
   }
-
   .btn:hover.type1::after {
-    transform: translate(-50%, -50%) scale(40);  /* grows to cover button */
+    transform: translate(-50%, -50%) scale(40);
   }
 
-  /* Light mode tweak: keep the same feel (optional) */
-  @media (prefers-color-scheme: light) {
-    .btn {
-      border-color: rgba(0,0,0,.8);
-      color: #111;
-    }
-    .type1::after { background: #111; }
-    .btn:hover { color: #fff; box-shadow: 0 8px 60px rgba(0,0,0,.15); }
+  /* Active (selected) */
+  .btn.is-active {
+    background: #111;   /* black bg */
+    color: #fff;        /* white text */
+    border-color: transparent;
+  }
+  .btn.is-active.type1::after {
+    transform: scale(0);   /* disable ripple */
+  }
+  .btn.is-active:hover {
+    color: #fff;
+    box-shadow: 0 8px 40px rgba(0,0,0,.25);
+  }
+
+  /* Dimmed */
+  .btn.is-dimmed {
+    opacity: .35;
+    filter: blur(1px);
+    pointer-events: none;
+  }
+
+  /* Tiny X */
+  .close-x {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 14px;
+    line-height: 1;
+    z-index: 2;
+    color: #fff;  /* white on dark active */
+    opacity: .7;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .close-x:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    cursor: pointer;
+  }
+
+  /* ---------- DARK MODE OVERRIDES ---------- */
+  .dark & .btn {
+    border-color: rgba(255,255,255,.9);
+    color: rgba(255,255,255,.92);
+  }
+  .dark & .type1::after { background: #fff; } /* white ripple */
+  .dark & .btn:hover {
+    color: #0f0f0f;
+    box-shadow: 0 8px 60px rgba(255,255,255,.12);
+  }
+  .dark & .btn.is-active {
+    background: #fff;
+    color: #0f0f0f;
+  }
+  .dark & .btn.is-active:hover {
+    color: #0f0f0f;
+    box-shadow: 0 8px 40px rgba(255,255,255,.12);
+  }
+  .dark & .close-x {
+    color: #0f0f0f;
   }
 `;
