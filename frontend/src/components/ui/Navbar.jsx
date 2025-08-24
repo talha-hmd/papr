@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Switch from './Switch';
 import TopDrawer from './TopDrawer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWhatsapp, faTwitter, faInstagram, faPatreon } from '@fortawesome/free-brands-svg-icons';
+import { faWhatsapp, faDiscord, faInstagram, faPatreon } from '@fortawesome/free-brands-svg-icons';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar() {
@@ -112,19 +112,22 @@ export default function Navbar() {
                     {open && (
                         <div
                             ref={menuRef}
-                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 flex gap-4 px-4 py-2 rounded-xl 
-                        bg-black/10 text-black border border-black/15 
-                        dark:bg-white/10 dark:text-white dark:border-white/15 
-                        backdrop-blur-md animate-slide-in-h"
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-50 flex gap-4 px-4 py-2 rounded-xl bg-black/10 text-black border border-black/15 dark:bg-white/10 dark:text-white dark:border-white/15 backdrop-blur-md animate-slide-in-h"
                         >
-                            {[faWhatsapp, faTwitter, faInstagram].map((icon) => (
+                            {[
+                                { icon: faWhatsapp, href: "https://chat.whatsapp.com/Bv1bqqqzKn9ACam4vSL4LR?mode=ems_copy_t" },
+                                { icon: faDiscord, href: "https://discord.gg/9zBsDPDQ" },
+                                { icon: faInstagram, href: "https://www.instagram.com/papr_app?igsh=OWx6ZWZ5dDNnZGtv&utm_source=qr" },
+                            ].map((item) => (
                                 <a
-                                    key={icon.iconName}
-                                    href="#"
+                                    key={item.href}
+                                    href={item.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="transition-transform duration-200 hover:scale-110"
-                                    aria-label={icon.iconName}
+                                    aria-label={item.icon.iconName}
                                 >
-                                    <FontAwesomeIcon icon={icon} className="w-5 h-5" />
+                                    <FontAwesomeIcon icon={item.icon} className="w-5 h-5" />
                                 </a>
                             ))}
                         </div>

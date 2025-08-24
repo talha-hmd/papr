@@ -6,13 +6,13 @@ export default function Footer() {
     <footer className="bg-white text-black dark:bg-black dark:text-white py-10 mt-5 transition-colors duration-300">
       {/* Social icons */}
       <div className="flex justify-center space-x-10 mb-6">
-        <a href="#" className="text-2xl transform transition-transform duration-300 hover:scale-125 hover:text-text-black dark:hover:text-gray-300">
+        <a href="https://chat.whatsapp.com/Bv1bqqqzKn9ACam4vSL4LR?mode=ems_copy_t" target="_blank" rel="noopener noreferrer" className="text-2xl transform transition-transform duration-300 hover:scale-125 hover:text-text-black dark:hover:text-gray-300">
           <i className="fa-brands fa-whatsapp"></i>
         </a>
-        <a href="#" className="text-2xl transform transition-transform duration-300 hover:scale-125 hover:text-text-black dark:hover:text-gray-300">
+        <a href="https://discord.gg/9zBsDPDQ" target="_blank" rel="noopener noreferrer" className="text-2xl transform transition-transform duration-300 hover:scale-125 hover:text-text-black dark:hover:text-gray-300">
           <i className="fa-brands fa-discord"></i>
         </a>
-        <a href="#" className="text-2xl transform transition-transform duration-300 hover:scale-125 hover:text-black dark:hover:text-gray-300">
+        <a href="https://www.instagram.com/papr_app?igsh=OWx6ZWZ5dDNnZGtv&utm_source=qr" target="_blank" rel="noopener noreferrer" className="text-2xl transform transition-transform duration-300 hover:scale-125 hover:text-black dark:hover:text-gray-300">
           <i className="fa-brands fa-instagram"></i>
         </a>
       </div>
