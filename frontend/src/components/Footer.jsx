@@ -1,7 +1,94 @@
 // src/components/Footer.jsx
-import React from "react";
+import emailjs from '@emailjs/browser';
+import React, { useRef, useState } from 'react';
 
 export default function Footer() {
+
+  const formRef = useRef(null);
+
+  // idle | sending | success | error | cooldown
+  const [tone, setTone] = useState("idle");
+  const [label, setLabel] = useState("Submit");
+  const [cooldown, setCooldown] = useState(0); // seconds left
+
+  const setTempButton = (text, newTone, ms = 5000) => {
+    setLabel(text);
+    setTone(newTone);
+    if (ms > 0) {
+      setTimeout(() => {
+        // if still not in cooldown/sending, go back to idle
+        if (newTone !== "cooldown" && newTone !== "sending") {
+          setLabel("Submit");
+          setTone("idle");
+        }
+      }, ms);
+    }
+  };
+
+  const startCooldown = (sec = 120) => {
+    setCooldown(sec);
+    setTone("cooldown");
+    setLabel(`Wait ${sec}s`);
+    const id = setInterval(() => {
+      setCooldown((p) => {
+        const next = p - 1;
+        if (next <= 0) {
+          clearInterval(id);
+          setTone("idle");
+          setLabel("Submit");
+          return 0;
+        }
+        setLabel(`Wait ${next}s`);
+        return next;
+      });
+    }, 1000);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (tone === "sending" || tone === "cooldown") return;
+
+    const feedback = formRef.current.feedback.value.trim();
+
+    // validations -> show **on the button** for ~5s
+    if (!feedback) return setTempButton("Please enter your feedback 😊", "error");
+    if (feedback.length < 5) return setTempButton("Too short, add a bit more ✍️", "error");
+    if (feedback.length > 500) return setTempButton("Max 500 characters ✂️", "error");
+
+    // send
+    setTone("sending");
+    setLabel("Sending…");
+
+    try {
+      await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      formRef.current.reset();
+      // brief success flash, then cooldown
+      setTempButton("Sent! ✅", "success", 1200);
+      setTimeout(() => startCooldown(120), 1200);
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setTempButton("Something went wrong 😕", "error");
+    }
+  };
+
+  // tone -> colors (smooth transitions)
+  const toneClass =
+    tone === "sending"
+      ? "bg-blue-500 text-white animate-pulse"
+      : tone === "success"
+        ? "bg-green-500 text-white"
+        : tone === "error"
+          ? "bg-red-500 text-white"
+          : tone === "cooldown"
+            ? "bg-gray-400 text-white"
+            : "bg-transparent text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10";
+
   return (
     <footer className="bg-white text-black dark:bg-black dark:text-white py-10 mt-5 transition-colors duration-300">
       {/* Social icons */}
@@ -23,14 +110,7 @@ export default function Footer() {
       </div>
 
       {/* Feedback input + submit */}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          // handle submit here (e.g. send to API)
-        }}
-        className="flex justify-center mb-4"
-      >
-        {/* container uses focus-within so both input + button get a white glow when focused */}
+      <form ref={formRef} onSubmit={handleSubmit} className="flex justify-center mb-4">
         <div className="flex items-center border border-gray-300 dark:border-white/20 rounded-lg overflow-hidden focus-within:ring-1 focus-within:ring-white transition duration-150">
           <input
             type="text"
@@ -38,13 +118,16 @@ export default function Footer() {
             placeholder="Give us Feedback"
             aria-label="Give us Feedback"
             className="feedback-input font-body px-4 py-2 bg-gray-100 dark:bg-white/5 text-black dark:text-white placeholder-gray-500 focus:outline-none"
+            disabled={tone === "sending"}
           />
           <button
             type="submit"
+            aria-live="polite"
             aria-label="Submit feedback"
-            className="cursor-pointer px-4 py-2 font-body bg-transparent text-black dark:text-white border-l border-gray-300 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10 focus:outline-none"
+            disabled={tone === "sending" || tone === "cooldown"}
+            className={`cursor-pointer px-4 py-2 font-body border-l border-gray-300 dark:border-white/20 focus:outline-none transition-colors duration-300 ${toneClass}`}
           >
-            Submit
+            {label}
           </button>
         </div>
       </form>
