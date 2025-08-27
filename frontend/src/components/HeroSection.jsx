@@ -79,7 +79,7 @@ export default function HeroSection({
 
         {/* LEFT QUOTE */}
         <aside
-          className="quote-container hidden xl:block absolute left-10 top-1/3 -translate-y-1/2 w-[260px] p-4 rounded-[28px] glass-card grain float-soft float-delay-sm fade-card fade-bottom z-10"
+          className="quote-container hidden xl:block absolute left-10 -top-1/2 -translate-y-1/2 w-[260px] p-4 rounded-[28px] glass-card grain float-soft float-delay-sm fade-card fade-bottom z-10"
           aria-hidden="true"
         >
           <div className="flex items-center gap-3 mb-1">

@@ -314,7 +314,7 @@ body {
     color: #111;
   }
 
-  @media (max-width: 1400px) {
+  @media (max-width: 1250px) {
     .quote-container {
       display: none;
     }
