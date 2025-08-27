@@ -117,7 +117,7 @@ export default function Navbar() {
                             {[
                                 { icon: faWhatsapp, href: "https://chat.whatsapp.com/Bv1bqqqzKn9ACam4vSL4LR?mode=ems_copy_t" },
                                 { icon: faDiscord, href: "https://discord.gg/9zBsDPDQ" },
-                                { icon: faInstagram, href: "https://www.instagram.com/papr_app?igsh=OWx6ZWZ5dDNnZGtv&utm_source=qr" },
+                                { icon: faInstagram, href: "https://www.instagram.com/papr.site/" },
                             ].map((item) => (
                                 <a
                                     key={item.href}
