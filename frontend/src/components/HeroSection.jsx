@@ -161,12 +161,11 @@ export default function HeroSection({
         </div>
 
         {/* Controls + Button */}
-        {/* Controls + Button (aligned, no overlap, works on all screens) */}
         <div className="w-full px-4 z-10">
           <div className="mx-auto w-full max-w-md md:-mt-6 lg:-mt-8">
             <div className="flex flex-col sm:flex-row gap-4 font-body">
               <Dropdown placeholder="Subject" items={subjects} value={subject} onChange={handleSubjectChange} className="w-full sm:flex-1" />
-              <Dropdown placeholder="Year" items={years.map(String)} value={year} onChange={handleYearChange} disabled={!subject} className="w-full sm:w-32" />
+              <Dropdown placeholder="Year" items={years.map(String)} value={year} onChange={handleYearChange} disabled={!subject} className="w-full sm:flex-1" />
             </div>
             <button className="mt-4 w-full px-5 py-2 rounded-[10px] backdrop-blur-md border border-black dark:border-white text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition disabled:opacity-50 duration-300 font-body cursor-pointer block" disabled={!subject || !year || loading} onClick={() => onFind?.(subject, year)}>
               {loading ? <ButtonLoader /> : "Find Paper"}

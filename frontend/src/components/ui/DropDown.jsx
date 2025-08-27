@@ -18,7 +18,9 @@ const Dropdown = ({
   value = "",
   onChange = () => { },
   disabled = false,
-  width = "240px",
+  width,
+  className="",
+  style={},
 }) => {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef(null);
@@ -47,6 +49,8 @@ const Dropdown = ({
       $width={width}
       $disabled={disabled}
       $active={Boolean(value)}  // <-- highlight when selected
+      className={className}
+      style={style}
     >
       <button
         type="button"
@@ -85,7 +89,7 @@ const Dropdown = ({
 };
 
 const StyledWrapper = styled.div`
-  width: ${(p) => p.$width};
+  ${(p) => p.$width ? `width: ${p.$width};` : ""}
   position: relative;
   font-size: 15px;
   line-height: 1.4;

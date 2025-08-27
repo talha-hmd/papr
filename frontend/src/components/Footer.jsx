@@ -117,7 +117,7 @@ export default function Footer() {
         <a href="https://discord.gg/9zBsDPDQ" target="_blank" rel="noopener noreferrer" className="text-2xl transform transition-transform duration-300 hover:scale-125 hover:text-text-black dark:hover:text-gray-300">
           <i className="fa-brands fa-discord"></i>
         </a>
-        <a href="https://www.instagram.com/papr_app?igsh=OWx6ZWZ5dDNnZGtv&utm_source=qr" target="_blank" rel="noopener noreferrer" className="text-2xl transform transition-transform duration-300 hover:scale-125 hover:text-black dark:hover:text-gray-300">
+        <a href="https://www.instagram.com/papr.site/" target="_blank" rel="noopener noreferrer" className="text-2xl transform transition-transform duration-300 hover:scale-125 hover:text-black dark:hover:text-gray-300">
           <i className="fa-brands fa-instagram"></i>
         </a>
       </div>
