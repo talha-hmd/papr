@@ -1,0 +1,5 @@
+# frontend/public/robots.txt
+User-agent: *
+Disallow:
+
+Sitemap: https://papr.site/sitemap.xml

@@ -1,6 +1,7 @@
 // src/components/Footer.jsx
 import emailjs from '@emailjs/browser';
 import React, { useRef, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Footer() {
 
@@ -10,6 +11,11 @@ export default function Footer() {
   const [tone, setTone] = useState("idle");
   const [label, setLabel] = useState("Submit");
   const [cooldown, setCooldown] = useState(0); // seconds left
+
+  // public key setup
+  useEffect(() => {
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+  }, []);
 
   const setTempButton = (text, newTone, ms = 5000) => {
     setLabel(text);
@@ -46,31 +52,43 @@ export default function Footer() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // prevent double submissions
     if (tone === "sending" || tone === "cooldown") return;
 
     const feedback = formRef.current.feedback.value.trim();
 
-    // validations -> show **on the button** for ~5s
-    if (!feedback) return setTempButton("Please enter your feedback 😊", "error");
-    if (feedback.length < 5) return setTempButton("Too short, add a bit more ✍️", "error");
-    if (feedback.length > 500) return setTempButton("Max 500 characters ✂️", "error");
+    // === validations ===
+    if (!feedback) {
+      return setTempButton("Please enter your feedback 😊", "error");
+    }
+    if (feedback.length < 5) {
+      return setTempButton("Too short, add a bit more ✍️", "error");
+    }
+    if (feedback.length > 500) {
+      return setTempButton("Max 500 characters ✂️", "error");
+    }
 
-    // send
+    // === send email ===
     setTone("sending");
     setLabel("Sending…");
 
     try {
+      // since you already did emailjs.init(publicKey) in useEffect,
+      // you don’t pass the public key here
       await emailjs.sendForm(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        formRef.current,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        formRef.current
       );
 
+      // reset form
       formRef.current.reset();
-      // brief success flash, then cooldown
+
+      // brief success flash, then start cooldown
       setTempButton("Sent! ✅", "success", 1200);
       setTimeout(() => startCooldown(120), 1200);
+
     } catch (err) {
       console.error("EmailJS error:", err);
       setTempButton("Something went wrong 😕", "error");
@@ -111,21 +129,18 @@ export default function Footer() {
 
       {/* Feedback input + submit */}
       <form ref={formRef} onSubmit={handleSubmit} className="flex justify-center mb-4">
-        <div className="flex items-center border border-gray-300 dark:border-white/20 rounded-lg overflow-hidden focus-within:ring-1 focus-within:ring-white transition duration-150">
+        <div className="flex flex-row max-[420px]:flex-col border border-gray-300 dark:border-white/20 rounded-lg overflow-hidden w-full max-w-md">
           <input
             type="text"
             name="feedback"
             placeholder="Give us Feedback"
-            aria-label="Give us Feedback"
-            className="feedback-input font-body px-4 py-2 bg-gray-100 dark:bg-white/5 text-black dark:text-white placeholder-gray-500 focus:outline-none"
+            className="flex-grow font-body px-4 py-2 bg-gray-100 dark:bg-white/5 text-black dark:text-white placeholder-gray-500 focus:outline-none"
             disabled={tone === "sending"}
           />
           <button
             type="submit"
-            aria-live="polite"
-            aria-label="Submit feedback"
             disabled={tone === "sending" || tone === "cooldown"}
-            className={`cursor-pointer px-4 py-2 font-body border-l border-gray-300 dark:border-white/20 focus:outline-none transition-colors duration-300 ${toneClass}`}
+            className="cursor-pointer px-4 py-2 font-body border-l max-[420px]:border-l-0 max-[420px]:border-t border-gray-300 dark:border-white/20"
           >
             {label}
           </button>

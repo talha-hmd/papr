@@ -314,6 +314,12 @@ body {
     color: #111;
   }
 
+  @media (max-width: 1400px) {
+    .quote-container {
+      display: none;
+    }
+  }
+
   .dark .quote-mark {
     color: #fff;
   }
@@ -391,6 +397,6 @@ body {
   .feedback-input::placeholder {
     font-style: italic;
     color: #6b7280;
-    /* placeholder-gray-500 */
   }
+
 }

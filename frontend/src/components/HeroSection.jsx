@@ -79,7 +79,7 @@ export default function HeroSection({
 
         {/* LEFT QUOTE */}
         <aside
-          className="hidden xl:block absolute left-10 top-1/3 -translate-y-1/2 w-[260px] p-4 rounded-[28px] glass-card grain float-soft float-delay-sm fade-card fade-bottom z-10"
+          className="quote-container hidden xl:block absolute left-10 top-1/3 -translate-y-1/2 w-[260px] p-4 rounded-[28px] glass-card grain float-soft float-delay-sm fade-card fade-bottom z-10"
           aria-hidden="true"
         >
           <div className="flex items-center gap-3 mb-1">
@@ -103,7 +103,7 @@ export default function HeroSection({
 
         {/* RIGHT QUOTE */}
         <aside
-          className="hidden xl:block absolute right-10 top-1/2 translate-y-6 w-[260px] p-4 rounded-[28px] glass-card grain float-soft float-delay-md fade-card fade-bottom z-10"
+          className="quote-container hidden xl:block absolute right-10 top-1/2 translate-y-6 w-[260px] p-4 rounded-[28px] glass-card grain float-soft float-delay-md fade-card fade-bottom z-10"
           aria-hidden="true"
         >
           <div className="flex items-center gap-3 mb-1">
@@ -160,34 +160,20 @@ export default function HeroSection({
           </div>
         </div>
 
-        {/* Controls (unchanged) */}
-        <div className="flex flex-row gap-4 mt-2\1 font-body w-[384px] z-10 translate-y-[-120%]">
-          <Dropdown
-            placeholder="Subject"
-            items={subjects}
-            value={subject}
-            onChange={handleSubjectChange}
-            width="220px"
-          />
-          <Dropdown
-            placeholder="Year"
-            items={years.map(String)}
-            value={year}
-            onChange={handleYearChange}
-            disabled={!subject}
-            width="160px"
-          />
+        {/* Controls + Button */}
+        {/* Controls + Button (aligned, no overlap, works on all screens) */}
+        <div className="w-full px-4 z-10">
+          <div className="mx-auto w-full max-w-md md:-mt-6 lg:-mt-8">
+            <div className="flex flex-col sm:flex-row gap-4 font-body">
+              <Dropdown placeholder="Subject" items={subjects} value={subject} onChange={handleSubjectChange} className="w-full sm:flex-1" />
+              <Dropdown placeholder="Year" items={years.map(String)} value={year} onChange={handleYearChange} disabled={!subject} className="w-full sm:w-32" />
+            </div>
+            <button className="mt-4 w-full px-5 py-2 rounded-[10px] backdrop-blur-md border border-black dark:border-white text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition disabled:opacity-50 duration-300 font-body cursor-pointer block" disabled={!subject || !year || loading} onClick={() => onFind?.(subject, year)}>
+              {loading ? <ButtonLoader /> : "Find Paper"}
+            </button>
+          </div>
         </div>
-
-        <button
-          className="translate-y-[-100%] mt-4 px-5 py-2 w-[384px] rounded-[10px] backdrop-blur-md border border-black dark:border-white text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/15 transition disabled:opacity-50 duration-300 font-body cursor-pointer z-9"
-          disabled={!subject || !year || loading}
-          onClick={() => onFind?.(subject, year)}
-        >
-          {loading ? <ButtonLoader /> : "Find Paper"}
-        </button>
       </div>
     </section>
   );
-
 }
