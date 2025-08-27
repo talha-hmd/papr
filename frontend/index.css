@@ -377,7 +377,7 @@ body {
   .app-frame {
     width: 90%;
     max-width: 1600px;
-    height: 90vh;
+    height: 90dvh;
     border-radius: 28px;
     background: transparent;
     /* Color of outline */

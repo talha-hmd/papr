@@ -28,7 +28,7 @@ export default function ViewSection({ qpUrl = "", msUrl = "" }) {
             </div>
 
             {/* QP PDF */}
-            <div className="h-[70vh]">
+            <div className="h-[7dvh]">
               {qpUrl ? (
                 <PdfViewer fileUrl={qpUrl} />
               ) : (
@@ -56,7 +56,7 @@ export default function ViewSection({ qpUrl = "", msUrl = "" }) {
             </div>
 
             {/* MS PDF */}
-            <div className="h-[70vh]">
+            <div className="h-[70dvh]">
               {msUrl ? (
                 <PdfViewer fileUrl={msUrl} />
               ) : (

@@ -74,7 +74,7 @@ export default function HeroSection({
   const years = subject ? yearsBySubject[subject] || [] : [];
 
   return (
-    <section className="relative w-full h-[641px] text-black dark:text-white flex flex-col justify-center items-center overflow-visible hero-bg transition-colors duration-300">
+    <section className="relative isolate w-full h-[641px] text-black dark:text-white flex flex-col justify-center items-center overflow-visible hero-bg transition-colors duration-300">
       <div className="hero-content w-full flex flex-col items-center">
 
         {/* LEFT QUOTE */}

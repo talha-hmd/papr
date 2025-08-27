@@ -140,7 +140,7 @@ export default function Footer() {
           <button
             type="submit"
             disabled={tone === "sending" || tone === "cooldown"}
-            className="cursor-pointer px-4 py-2 font-body border-l max-[420px]:border-l-0 max-[420px]:border-t border-gray-300 dark:border-white/20"
+            className={`cursor-pointer px-4 py-2 font-body border-l max-[420px]:border-l-0 max-[420px]:border-t border-gray-300 dark:border-white/20 transition-colors duration-300 ${toneClass}`}
           >
             {label}
           </button>
