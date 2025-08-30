@@ -151,7 +151,7 @@ export default function Footer() {
       <div className="font-heading text-center text-sm">
         Copyright © {new Date().getFullYear()} Papr
         <br />
-        All Rights Reserved, Developed by Ali.
+        All Rights Reserved, Developed by alli, Talha.
       </div>
     </footer>
   );
