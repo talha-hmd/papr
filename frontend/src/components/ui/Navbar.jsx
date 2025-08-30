@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Switch from './Switch';
 import TopDrawer from './TopDrawer';
+import ShareButton from './ShareButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp, faDiscord, faInstagram, faPatreon } from '@fortawesome/free-brands-svg-icons';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
@@ -133,6 +134,7 @@ export default function Navbar() {
                         </div>
                     )}
                 </button>
+                <ShareButton variant="header" />
             </nav>
         </header>
     );
